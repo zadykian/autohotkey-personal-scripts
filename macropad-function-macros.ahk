@@ -19,7 +19,7 @@ F15::
         return
     }
 
-    SendInput "#b{Enter}+{F10}"       ; Open Tray Hidden Icons
+    SendInput "#b{Enter}+{F10}" ; Open Tray Hidden Icons; Open Context Menu for HWMonitor
     Sleep 100
     SendInput "{Up}{Up}{Enter}" ; Navigate to "Restore"
     return
