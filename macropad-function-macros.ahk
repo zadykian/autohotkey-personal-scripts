@@ -7,7 +7,15 @@ F15::
 
     Run(pathToHwMonitor)
     Sleep(100)
-    WinWait(hwMonitorWindowTitle)
+    WinWait(hwMonitorWindowTitle,, 1.0)
+
+    if (!WinExist(hwMonitorWindowTitle))
+    {
+        ; For some reason HWMonitorPro is still not running,
+        ; try again manually in a few seconds...
+        return
+    }
+
     WinGetPos &X, &Y,,, hwMonitorWindowTitle
 
     ; Window is minimized
