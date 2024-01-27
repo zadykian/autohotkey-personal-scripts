@@ -1,5 +1,10 @@
 ﻿#Requires AutoHotkey v2.0
 
+F14::
+{
+    ; todo: mute / unmute microphone
+}
+
 F15::
 {
     pathToHwMonitor := "C:\Program Files\HWMonitorPro\HWMonitorPro.exe"
@@ -29,4 +34,9 @@ F15::
     ; WinMinimize(hwMonitorWindowTitle)
     PostMessage 0x0112, 0xF020,,, hwMonitorWindowTitle
     return
+}
+
+F16::
+{
+    ; todo: change FanControl profile - normal / performance
 }
