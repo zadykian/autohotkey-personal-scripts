@@ -5,27 +5,24 @@ F15::
     pathToHwMonitor := "C:\Program Files\HWMonitorPro\HWMonitorPro.exe"
     hwMonitorWindowTitle := "ahk_exe HWMonitorPro.exe"
 
-    Run(pathToHwMonitor)
-    WinWait(hwMonitorWindowTitle)
-
-;    if (!ProcessExist("HWMonitorPro.exe"))
-;    {
-;        Run(pathToHwMonitor)
-;        WinWait(hwMonitorWindowTitle)
-;        return
-;    }
-
-    WinGetPos &X, &Y,,, hwMonitorWindowTitle
-
-    ; Window is minimized
-    if (X = -32000 and Y = -32000)
+    if (!ProcessExist("HWMonitorPro.exe"))
     {
-        ; WinRestore(hwMonitorWindowTitle)
-        PostMessage 0x0112, 0xF120,,, hwMonitorWindowTitle
+        Run(pathToHwMonitor)
+        WinWait(hwMonitorWindowTitle)
         return
     }
 
-    ; WinMinimize(hwMonitorWindowTitle)
-    PostMessage 0x0112, 0xF020,,, hwMonitorWindowTitle
+    if (WinExist(hwMonitorWindowTitle))
+    {
+        ; WinMinimize(hwMonitorWindowTitle)
+        PostMessage 0x0112, 0xF020,,, hwMonitorWindowTitle
+        return
+    }
+
+    SendInput "{Blind}#b{Enter}"       ; Open Tray Hidden Icons
+    SendInput "{Blind}+{F10}"          ; Open HWMonitor's Context Menu
+    Sleep 100
+    SendInput "{Blind}{Up}{Up}{Enter}" ; Navigate to "Restore"
+    Sleep 100
     return
 }
