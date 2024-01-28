@@ -5,6 +5,7 @@ F14::
     ; todo: mute / unmute microphone
 }
 
+; Open and Minimize HWMonitorPro from Task Bar
 F15::
 {
     pathToHwMonitor := "C:\Program Files\HWMonitorPro\HWMonitorPro.exe"
@@ -36,7 +37,44 @@ F15::
     return
 }
 
+; Switch Between FanControl Profiles
 F16::
 {
-    ; todo: change FanControl profile - normal / performance
+    rootDir := "C:\Program Files (x86)\FanControl\"
+    configDir := rootDir . "Configurations\"
+
+    configFiles := []
+    loop files configDir "*.json"
+    {
+        configFiles.Push(A_LoopFileName)
+    }
+
+    if (configFiles.Length == 0)
+    {
+        TrayTip("No any configuration files found", "FanControl")
+        return
+    }
+
+    targetConfigName := configFiles[1]
+    pathToLastSelected := configDir . "LastSelected.config"
+    if (FileExist(pathToLastSelected))
+    {
+        lastSelectedConfig := FileRead(pathToLastSelected)
+        ; Selecting the next (i + 1) configuration
+        for index, value in configFiles
+        {
+            if (value == lastSelectedConfig)
+            {
+                targetIndex := index + 1 > configFiles.Length ? 1 : index + 1
+                targetConfigName := configFiles[targetIndex]
+                break
+            }
+        }
+
+        FileDelete(pathToLastSelected)
+    }
+
+    FileAppend(targetConfigName, pathToLastSelected)
+    Run(rootDir . "FanControl.exe --config " . targetConfigName)
+    TrayTip("Switched to " . targetConfigName . " configuration", "FanControl")
 }
