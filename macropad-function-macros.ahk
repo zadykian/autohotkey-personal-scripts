@@ -77,6 +77,7 @@ ToggleApp(rootDir, exeName)
         Run(rootDir . exeName)
         Sleep(100)
         WinWait(windowTitle,, 1.0)
+        return
     }
 
     if (!WinExist(windowTitle))
