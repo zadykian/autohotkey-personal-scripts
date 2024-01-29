@@ -1,12 +1,18 @@
 ﻿#Requires AutoHotkey v2.0
+#SingleInstance Force
 
 F14::
 {
     ; todo: mute / unmute microphone
 }
 
+^F14::
+{
+    ; todo: open / close mixer (Settings -> System -> Sound -> Volume Mixer)
+}
+
 ; Open and Minimize HWMonitorPro from Task Bar
-F15::
+F16::
 {
     pathToHwMonitor := "C:\Program Files\HWMonitorPro\HWMonitorPro.exe"
     hwMonitorWindowTitle := "ahk_exe HWMonitorPro.exe"
@@ -38,7 +44,7 @@ F15::
 }
 
 ; Switch Between FanControl Profiles
-F16::
+^F16::
 {
     rootDir := "C:\Program Files (x86)\FanControl\"
     configDir := rootDir . "Configurations\"
