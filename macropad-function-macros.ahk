@@ -6,42 +6,24 @@ F14::
     ; todo: mute / unmute microphone
 }
 
+
 ^F14::
 {
     ; todo: open / close mixer (Settings -> System -> Sound -> Volume Mixer)
 }
 
+
+; Open and Minimize Telegram from Task Bar
+F15::ToggleApp("C:\Tools\Telegram.TelegramDesktop\", "Telegram.exe")
+
+
+; Open and Minimize Spotify from Task Bar
+^F15::ToggleApp("C:\Users\zadykian\AppData\Roaming\Spotify\", "Spotify.exe")
+
+
 ; Open and Minimize HWMonitorPro from Task Bar
-F16::
-{
-    pathToHwMonitor := "C:\Program Files\HWMonitorPro\HWMonitorPro.exe"
-    hwMonitorWindowTitle := "ahk_exe HWMonitorPro.exe"
+F16::ToggleApp("C:\Program Files\HWMonitorPro\", "HWMonitorPro.exe")
 
-    Run(pathToHwMonitor)
-    Sleep(100)
-    WinWait(hwMonitorWindowTitle,, 1.0)
-
-    if (!WinExist(hwMonitorWindowTitle))
-    {
-        ; For some reason HWMonitorPro is still not running,
-        ; try again manually in a few seconds...
-        return
-    }
-
-    WinGetPos &X, &Y,,, hwMonitorWindowTitle
-
-    ; Window is minimized
-    if (X = -32000 and Y = -32000)
-    {
-        ; WinRestore(hwMonitorWindowTitle)
-        PostMessage 0x0112, 0xF120,,, hwMonitorWindowTitle
-        return
-    }
-
-    ; WinMinimize(hwMonitorWindowTitle)
-    PostMessage 0x0112, 0xF020,,, hwMonitorWindowTitle
-    return
-}
 
 ; Switch Between FanControl Profiles
 ^F16::
@@ -83,4 +65,38 @@ F16::
     FileAppend(targetConfigName, pathToLastSelected)
     Run(rootDir . "FanControl.exe --config " . targetConfigName)
     TrayTip("Switched to " . targetConfigName . " configuration", "FanControl")
+}
+
+
+ToggleApp(rootDir, exeName)
+{
+    windowTitle := "ahk_exe " . exeName
+
+    if (!ProcessExist(exeName))
+    {
+        Run(rootDir . exeName)
+        Sleep(100)
+        WinWait(windowTitle,, 1.0)
+    }
+
+    if (!WinExist(windowTitle))
+    {
+        ; For some reason application is still not running,
+        ; try again manually in a few seconds...
+        return
+    }
+
+    WinGetPos &X, &Y,,, windowTitle
+
+    ; Window is minimized
+    if (X = -32000 and Y = -32000)
+    {
+        ; WinRestore(windowTitle)
+        PostMessage 0x0112, 0xF120,,, windowTitle
+        return
+    }
+
+    ; WinMinimize(windowTitle)
+    PostMessage 0x0112, 0xF020,,, windowTitle
+    return
 }
