@@ -5,6 +5,10 @@
 #Include "AppPaths.ahk"
 #Include "FanControl.ahk"
 
+A_HotkeyInterval := 1000
+A_MaxHotkeysPerInterval := 100
+
+
 ; Central Encoder
 !F20::Volume_Down ; [Rotate Left]
 ^F20::Volume_Mute ; [Push]
