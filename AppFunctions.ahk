@@ -2,9 +2,17 @@
 
 ToggleAppTaskbar(rootDir, exeName)
 {
+    wasAlreadyRunning := AppIsOpened(exeName)
+
     if (!TryRunApp(rootDir, exeName))
     {
-        ; Try again manually in a few seconds...
+        ; Try again manually in a few seconds
+        return
+    }
+
+    if (!wasAlreadyRunning)
+    {
+        ; Soundn't be minimized/maximized
         return
     }
 
@@ -25,34 +33,36 @@ ToggleAppTaskbar(rootDir, exeName)
 
 TryRunApp(rootDir, exeName)
 {
-    windowTitle := "ahk_exe " . exeName
-
-    if (WinExist(windowTitle))
+    if (AppIsOpened(exeName))
     {
         return true
     }
 
     attemptsLeft := 3
-    while (!WinExist(windowTitle) and attemptsLeft != 0)
+    while (!AppIsOpened(exeName) and attemptsLeft != 0)
     {
         Run(rootDir . exeName)
         Sleep(100)
-        WinWait(windowTitle,, 1.0)
+        WinWait("ahk_exe " . exeName,, 1.0)
         attemptsLeft--
     }
 
-    return WinExist(windowTitle)
+    if (attemptsLeft)
+    {
+        TrayTip("Failed to start the application. Attempts are exhausted.", exeName, "Icon!")
+    }
+
+    return AppIsOpened(exeName)
 }
 
 MinimizeApp(exeName)
 {
-    windowTitle := "ahk_exe " . exeName
-
-    if (!WinExist(windowTitle))
+    if (!AppIsOpened(exeName))
     {
         return
     }
 
+    windowTitle := "ahk_exe " . exeName
     ; WinMinimize(windowTitle)
     PostMessage 0x0112, 0xF020,,, windowTitle
 }
@@ -61,4 +71,9 @@ TerminateApp(exeName)
 {
     ProcessClose(exeName)
     ProcessWaitClose(exeName, 3.0)
+}
+
+AppIsOpened(exeName)
+{
+    return WinExist("ahk_exe " . exeName)
 }
