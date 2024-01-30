@@ -47,11 +47,6 @@ TryRunApp(rootDir, exeName)
         attemptsLeft--
     }
 
-    if (attemptsLeft)
-    {
-        TrayTip("Failed to start the application. Attempts are exhausted.", exeName, "Icon!")
-    }
-
     return AppIsOpened(exeName)
 }
 
