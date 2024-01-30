@@ -1,6 +1,8 @@
 ﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 
+#Include "AppFunctions.ahk"
+#Include "AppPaths.ahk"
 
 ; Central Encoder
 !F20::Volume_Down ; [Rotate Left]
@@ -14,10 +16,10 @@
 +F13::Media_Prev       ; [Triple Tap]
 
 ; [Single Hold] Open/Minimize Spotify
-!+F13::ToggleAppTaskbar("C:\Users\zadykian\AppData\Roaming\Spotify\", "Spotify.exe")
+!+F13::ToggleAppTaskbar(GetSpotifyRootDir(), SpotifyExeName)
 
 ; [Double Hold] Close Spotify
-^+F13::TerminateApp("Spotify.exe")
+^+F13::TerminateApp(SpotifyExeName)
 
 ; [Single Tap] PowerToys Mute Microphone
 !F14::#+A
@@ -29,23 +31,21 @@
 !+F14::#+Q
 
 ; [Single Tap] Open/Minimize Telegram
-!F15::ToggleAppTaskbar("C:\Tools\Telegram.TelegramDesktop\", "Telegram.exe")
+!F15::ToggleAppTaskbar(GetTelegramRootDir(), TelegramExeName)
 
 ; [Double Tap] Open/Minimize Discord
-^F15::ToggleAppTaskbar(
-    "",
-    "Discord.exe",
-    "pwsh.exe -c `"ii \`"C:\Users\zadykian\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Discord Inc\Discord.lnk\`"`""
-)
-
+^F15::ToggleAppTaskbar(GetDiscordRootDir(), DiscordExeName)
 
 ; [Single Tap] Open/Minimize HWMonitorPro
-!F16::ToggleAppTaskbar("C:\Program Files\HWMonitorPro\", "HWMonitorPro.exe")
+!F16::ToggleAppTaskbar(GetHwMonitorRootDir(), HWMonitorExeName)
 
 ; [Single Hold] Switch Between FanControl Profiles
-!+F16::
+!+F16:: SwitchFanControlProfile()
+
+
+SwitchFanControlProfile()
 {
-    rootDir := "C:\Program Files (x86)\FanControl\"
+    rootDir := GetFanControlRootDir()
     configDir := rootDir . "Configurations\"
 
     configFiles := []
@@ -80,47 +80,6 @@
     }
 
     FileAppend(targetConfigName, pathToLastSelected)
-    Run(rootDir . "FanControl.exe --config " . targetConfigName)
+    Run(rootDir . FanControlExeName . " --config " . targetConfigName)
     TrayTip("Switched to " . targetConfigName . " configuration", "FanControl")
-}
-
-
-ToggleAppTaskbar(rootDir, exeName, runCommand := "")
-{
-    windowTitle := "ahk_exe " . exeName
-
-    if (!WinExist(windowTitle))
-    {
-        Run(runCommand == "" ? rootDir . exeName : runCommand)
-        Sleep(100)
-        WinWait(windowTitle,, 1.0)
-        return
-    }
-
-    if (!WinExist(windowTitle))
-    {
-        ; For some reason application is still not running,
-        ; try again manually in a few seconds...
-        return
-    }
-
-    WinGetPos &X, &Y,,, windowTitle
-
-    ; Window is minimized
-    if (X = -32000 and Y = -32000)
-    {
-        ; WinRestore(windowTitle)
-        PostMessage 0x0112, 0xF120,,, windowTitle
-        return
-    }
-
-    ; WinMinimize(windowTitle)
-    PostMessage 0x0112, 0xF020,,, windowTitle
-    return
-}
-
-TerminateApp(exeName)
-{
-    ProcessClose(exeName)
-    ProcessWaitClose(exeName, 3.0)
 }
