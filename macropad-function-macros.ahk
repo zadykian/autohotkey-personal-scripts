@@ -1,29 +1,38 @@
 ﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 
-F14::
-{
-    ; todo: mute / unmute microphone
-}
+
+; Central Encoder
+!F20::Volume_Down ; [Rotate Left]
+^F20::Volume_Mute ; [Push]
++F20::Volume_Up   ; [Rotate Right]
 
 
-^F14::
-{
-    ; todo: open / close mixer (Settings -> System -> Sound -> Volume Mixer)
-}
+; Any Key
+!F13::Media_Play_Pause ; [Single Tap]
+^F13::Media_Next       ; [Double Tap]
++F13::Media_Prev       ; [Triple Tap]
+
+; [Single Hold] Toggle Spotify
+!+F13::ToggleAppTaskbar("C:\Users\zadykian\AppData\Roaming\Spotify\", "Spotify.exe")
+
+; [Double Hold] Close Spotify
+^+F13::TerminateApp("Spotify.exe")
 
 
-; Open and Minimize Telegram from Task Bar
-F15::ToggleApp("C:\Tools\Telegram.TelegramDesktop\", "Telegram.exe")
+; [Single Tap] Toggle Telegram
+!F15::ToggleAppTaskbar("C:\Tools\Telegram.TelegramDesktop\", "Telegram.exe")
+
+; [Double Tap] Toggle Discord
+^F15::ToggleAppTaskbar(
+    "",
+    "Discord.exe",
+    "pwsh.exe -c `"ii \`"C:\Users\zadykian\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Discord Inc\Discord.lnk\`"`""
+)
 
 
-; Open and Minimize Spotify from Task Bar
-^F15::ToggleApp("C:\Users\zadykian\AppData\Roaming\Spotify\", "Spotify.exe")
-
-
-; Open and Minimize HWMonitorPro from Task Bar
-F16::ToggleApp("C:\Program Files\HWMonitorPro\", "HWMonitorPro.exe")
-
+; [Single Tap] Open and Minimize HWMonitorPro from Task Bar
+!F16::ToggleAppTaskbar("C:\Program Files\HWMonitorPro\", "HWMonitorPro.exe")
 
 ; Switch Between FanControl Profiles
 ^F16::
@@ -68,13 +77,13 @@ F16::ToggleApp("C:\Program Files\HWMonitorPro\", "HWMonitorPro.exe")
 }
 
 
-ToggleApp(rootDir, exeName)
+ToggleAppTaskbar(rootDir, exeName, runCommand := "")
 {
     windowTitle := "ahk_exe " . exeName
 
-    if (!ProcessExist(exeName))
+    if (!WinExist(windowTitle))
     {
-        Run(rootDir . exeName)
+        Run(runCommand == "" ? rootDir . exeName : runCommand)
         Sleep(100)
         WinWait(windowTitle,, 1.0)
         return
@@ -100,4 +109,10 @@ ToggleApp(rootDir, exeName)
     ; WinMinimize(windowTitle)
     PostMessage 0x0112, 0xF020,,, windowTitle
     return
+}
+
+TerminateApp(exeName)
+{
+    ProcessClose(exeName)
+    ProcessWaitClose(exeName, 3.0)
 }
