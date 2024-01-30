@@ -13,17 +13,25 @@
 ^F13::Media_Next       ; [Double Tap]
 +F13::Media_Prev       ; [Triple Tap]
 
-; [Single Hold] Toggle Spotify
+; [Single Hold] Open/Minimize Spotify
 !+F13::ToggleAppTaskbar("C:\Users\zadykian\AppData\Roaming\Spotify\", "Spotify.exe")
 
 ; [Double Hold] Close Spotify
 ^+F13::TerminateApp("Spotify.exe")
 
+; [Single Tap] PowerToys Mute Microphone
+!F14::#+A
 
-; [Single Tap] Toggle Telegram
+; [Dobule Tap] PowerToys Mute Camera
+^F14::#+O
+
+; [Single Hold] PowerToys Mute Microphone and Camera
+!+F14::#+Q
+
+; [Single Tap] Open/Minimize Telegram
 !F15::ToggleAppTaskbar("C:\Tools\Telegram.TelegramDesktop\", "Telegram.exe")
 
-; [Double Tap] Toggle Discord
+; [Double Tap] Open/Minimize Discord
 ^F15::ToggleAppTaskbar(
     "",
     "Discord.exe",
@@ -31,11 +39,11 @@
 )
 
 
-; [Single Tap] Open and Minimize HWMonitorPro from Task Bar
+; [Single Tap] Open/Minimize HWMonitorPro
 !F16::ToggleAppTaskbar("C:\Program Files\HWMonitorPro\", "HWMonitorPro.exe")
 
-; Switch Between FanControl Profiles
-^F16::
+; [Single Hold] Switch Between FanControl Profiles
+!+F16::
 {
     rootDir := "C:\Program Files (x86)\FanControl\"
     configDir := rootDir . "Configurations\"
