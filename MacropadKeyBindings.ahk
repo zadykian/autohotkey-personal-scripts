@@ -12,61 +12,30 @@ A_MaxHotkeysPerInterval := 100
 ; Central Encoder
 
 ; [Rotate Left] Decrease Volume
-!F20::
-{
-    Send("{Volume_Down}")
-    ReleaseModifierKeys()
-}
+!F20::Volume_Down
 
 ; [Push] Mute / Unmute Volume
-^F20::
-{
-    Send("{Volume_Mute}")
-    ReleaseModifierKeys()
-}
+^F20::Volume_Mute
 
 ; [Rotate Right] Increase Volume
 +F20::Volume_Up
-{
-    Send("{Volume_Up}")
-    ReleaseModifierKeys()
-}
 
 
 ; [Single Tap] Play / Pause
-!F13::
-{
-    Send("{Media_Play_Pause}")
-    ReleaseModifierKeys()
-}
+!F13::Media_Play_Pause
 
 ; [Double Tap] Next Track
-^F13::
-{
-    Send("{Media_Next}")
-    ReleaseModifierKeys()
-}
+^F13::Media_Next
 
-; [Triple Tap] Previous 
-+F13::
-{
-    Send("{Media_Prev}")
-    ReleaseModifierKeys()
-}
+; [Triple Tap] Previous Track
++F13::Media_Prev
 
 ; [Single Hold] Open/Minimize Spotify
-!+F13::
-{
-    ToggleAppTaskbar(GetSpotifyRootDir(), SpotifyExeName)
-    ReleaseModifierKeys()
-}
+!+F13::ToggleAppTaskbar(GetSpotifyRootDir(), SpotifyExeName)
 
 ; [Double Hold] Close Spotify
-^+F13::
-{
-    TerminateApp(SpotifyExeName)
-    ReleaseModifierKeys()
-}
+^+F13::TerminateApp(SpotifyExeName)
+
 
 ; [Single Tap] PowerToys Mute Microphone
 ; !F14::#+A
@@ -90,11 +59,3 @@ A_MaxHotkeysPerInterval := 100
 
 ; [Single Hold] Switch Between FanControl Profiles
 !+F16:: SwitchFanControlProfile()
-
-ReleaseModifierKeys()
-{
-    for key in [ "LAlt", "RAlt", "LControl", "RControl", "LShift", "RShift", "LWin", "RWin" ]
-    {
-        Send("{" . key . " up}")
-    }
-}
