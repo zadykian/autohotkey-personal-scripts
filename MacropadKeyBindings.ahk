@@ -34,20 +34,39 @@ A_MaxHotkeysPerInterval := 100
 
 
 ; [Single Tap] Play / Pause
-!F13::Media_Play_Pause
+!F13::
+{
+    Send("{Media_Play_Pause}")
+    ReleaseModifierKeys()
+}
 
 ; [Double Tap] Next Track
-^F13::Media_Next
+^F13::
+{
+    Send("{Media_Next}")
+    ReleaseModifierKeys()
+}
 
 ; [Triple Tap] Previous 
-+F13::Media_Prev
++F13::
+{
+    Send("{Media_Prev}")
+    ReleaseModifierKeys()
+}
 
 ; [Single Hold] Open/Minimize Spotify
-!+F13::ToggleAppTaskbar(GetSpotifyRootDir(), SpotifyExeName)
+!+F13::
+{
+    ToggleAppTaskbar(GetSpotifyRootDir(), SpotifyExeName)
+    ReleaseModifierKeys()
+}
 
 ; [Double Hold] Close Spotify
-^+F13::TerminateApp(SpotifyExeName)
-
+^+F13::
+{
+    TerminateApp(SpotifyExeName)
+    ReleaseModifierKeys()
+}
 
 ; [Single Tap] PowerToys Mute Microphone
 ; !F14::#+A
@@ -74,7 +93,7 @@ A_MaxHotkeysPerInterval := 100
 
 ReleaseModifierKeys()
 {
-    for key in [ "Alt", "Control", "Shift", "Win" ]
+    for key in [ "LAlt", "RAlt", "LControl", "RControl", "LShift", "RShift", "LWin", "RWin" ]
     {
         Send("{" . key . " up}")
     }
