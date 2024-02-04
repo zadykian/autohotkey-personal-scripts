@@ -12,13 +12,25 @@ A_MaxHotkeysPerInterval := 100
 ; Central Encoder
 
 ; [Rotate Left] Decrease Volume
-!F20::Volume_Down
+!F20::
+{
+    Send("{Volume_Down}")
+    ReleaseModifierKeys()
+}
 
 ; [Push] Mute / Unmute Volume
-^F20::Volume_Mute
+^F20::
+{
+    Send("{Volume_Mute}")
+    ReleaseModifierKeys()
+}
 
 ; [Rotate Right] Increase Volume
 +F20::Volume_Up
+{
+    Send("{Volume_Up}")
+    ReleaseModifierKeys()
+}
 
 
 ; [Single Tap] Play / Pause
@@ -27,7 +39,7 @@ A_MaxHotkeysPerInterval := 100
 ; [Double Tap] Next Track
 ^F13::Media_Next
 
-; [Triple Tap] Previous Track
+; [Triple Tap] Previous 
 +F13::Media_Prev
 
 ; [Single Hold] Open/Minimize Spotify
@@ -59,3 +71,11 @@ A_MaxHotkeysPerInterval := 100
 
 ; [Single Hold] Switch Between FanControl Profiles
 !+F16:: SwitchFanControlProfile()
+
+ReleaseModifierKeys()
+{
+    for key in [ "Alt", "Control", "Shift", "Win" ]
+    {
+        Send("{" . key . " up}")
+    }
+}
