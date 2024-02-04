@@ -7,7 +7,7 @@
 
 A_HotkeyInterval := 1000
 A_MaxHotkeysPerInterval := 100
-
+A_MenuMaskKey := "vkFF" ; vkFF is reserved to mean "no mapping"
 
 ; Central Encoder
 
@@ -38,13 +38,13 @@ A_MaxHotkeysPerInterval := 100
 
 
 ; [Single Tap] PowerToys Mute Microphone
-; !F14::#+A
+!F14::#+A
 
 ; [Dobule Tap] PowerToys Mute Camera
-; ^F14::#+O
+^F14::#+O
 
 ; [Single Hold] PowerToys Mute Microphone and Camera
-;!+F14::#+Q
+!+F14::#+Q
 
 
 ; [Single Tap] Open/Minimize Telegram
